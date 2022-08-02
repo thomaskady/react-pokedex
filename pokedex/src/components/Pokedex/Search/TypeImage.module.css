@@ -1,0 +1,20 @@
+.types {
+    width: 50px;
+    position: relative;
+}
+
+.type {
+    max-height: 24px;
+    max-width: 24px;
+}
+
+.popup {
+    position: relative;
+    top: 10px;
+    background: yellow;
+    position: absolute;
+}
+
+.popup p {
+    font-size: 1em;
+}

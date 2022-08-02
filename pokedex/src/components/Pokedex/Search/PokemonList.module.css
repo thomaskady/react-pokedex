@@ -1,5 +1,6 @@
 .list {
     max-height: 100%;
+    width: 80%;
     overflow-y: scroll;
 }
 
@@ -10,9 +11,4 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-}
-
-.type {
-    max-height: 24px;
-    max-width: 24px;
 }

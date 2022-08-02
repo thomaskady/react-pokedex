@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef, } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import throttle from 'lodash/throttle';
 
+import TypeImage from './TypeImage';
 import classes from '../Search/PokemonList.module.css';
 
 const Pokedex = require('pokeapi-js-wrapper');
@@ -9,8 +10,10 @@ const P = new Pokedex.Pokedex();
 let start = 1;
 let end = 51;
 
-const boxSpriteURL = 'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/';
-const typeURL = 'https://raw.githubusercontent.com/msikma/pokesprite/master/misc/types/gen8/'
+const boxSpriteURL =
+    'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/';
+const typeURL =
+    'https://raw.githubusercontent.com/msikma/pokesprite/master/misc/types/gen8/';
 
 const PokemonList = (props) => {
     const effectRan = useRef(false);
@@ -19,7 +22,7 @@ const PokemonList = (props) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchPokemon = async (filter) => {
-        if(end === 905) return;
+        if (end === 905) return;
         if (end > 900) {
             end = 905;
         }
@@ -33,12 +36,21 @@ const PokemonList = (props) => {
             let typeImgURL;
             if (data.types.length > 1) {
                 typing = [data.types[0].type.name, data.types[1].type.name];
-                typeImgURL = [`${typeURL}${data.types[0].type.name}.png`, `${typeURL}${data.types[1].type.name}.png`];
+                typeImgURL = [
+                    `${typeURL}${data.types[0].type.name}.png`,
+                    `${typeURL}${data.types[1].type.name}.png`,
+                ];
             } else {
                 typing = [data.types[0].type.name];
                 typeImgURL = [`${typeURL}${data.types[0].type.name}.png`];
             }
-            const pokemon = { id: data.id, name: data.name, type: typing, typeImg: typeImgURL, boxSprite: `${boxSpriteURL}${data.name}.png` };
+            const pokemon = {
+                id: data.id,
+                name: data.name,
+                type: typing,
+                typeImg: typeImgURL,
+                boxSprite: `${boxSpriteURL}${data.name}.png`,
+            };
             newPokemon.push(pokemon);
         }
         start += 51;
@@ -84,7 +96,14 @@ const PokemonList = (props) => {
         >
             {pokemonDisplayList.map((pokemon) => {
                 return (
-                    <li><img src={pokemon.boxSprite} alt={`Box sprite for ${pokemon.name}`}></img>{`${pokemon.id} ${pokemon.name}`}{pokemon.typeImg.map((img) => <img src={img} alt='Logo for pokemon typing' className={classes.type}></img>)}</li>
+                    <li key={pokemon.id}>
+                        <img
+                            src={pokemon.boxSprite}
+                            alt={`Box sprite for ${pokemon.name}`}
+                        ></img>
+                        {`${pokemon.id} ${pokemon.name}`}
+                        <TypeImage pokemon={pokemon} />
+                    </li>
                 );
             })}
             {isLoading && <p>Loading...</p>}
