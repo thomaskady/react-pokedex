@@ -1,5 +1,18 @@
 .list {
     max-height: 100%;
-    overflow: hidden;
     overflow-y: scroll;
+}
+
+.list li {
+    list-style-type: none;
+    border: 2px solid #383b4f;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.type {
+    max-height: 24px;
+    max-width: 24px;
 }
