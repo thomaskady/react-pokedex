@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import throttle from 'lodash/throttle';
 
-import TypeImage from './TypeImage';
+import PokemonListItem from './PokemonListItem';
 import classes from '../Search/PokemonList.module.css';
 
 const Pokedex = require('pokeapi-js-wrapper');
@@ -27,11 +27,9 @@ const PokemonList = (props) => {
             end = 905;
         }
         setIsLoading(true);
-        console.log(start, end);
         const newPokemon = [];
         for (let i = start; i <= end; i++) {
             const data = await P.getPokemon(i);
-            console.log(data);
             let typing;
             let typeImgURL;
             if (data.types.length > 1) {
@@ -49,7 +47,14 @@ const PokemonList = (props) => {
                 name: data.name,
                 type: typing,
                 typeImg: typeImgURL,
-                boxSprite: `${boxSpriteURL}${data.name}.png`,
+                sprites: {
+                    box: `${boxSpriteURL}${data.name}.png`,
+                    frontDefault: data.sprites['front_default'],
+                    frontShiny: data.sprites['front_shiny'],
+                    backDefault: data.sprites['back_default'],
+                    backShiny: data.sprites['back_shiny'],
+                },
+                species: data.species.url
             };
             newPokemon.push(pokemon);
         }
@@ -77,7 +82,6 @@ const PokemonList = (props) => {
 
     const scrollHandler = async (event) => {
         const { scrollTop, clientHeight, scrollHeight } = scrollRef.current;
-        console.log(scrollTop, clientHeight, scrollHeight);
         if (
             scrollHeight - (scrollTop + clientHeight) < 100 &&
             isLoading === false
@@ -95,16 +99,7 @@ const PokemonList = (props) => {
             onScroll={throttledScrollHandler}
         >
             {pokemonDisplayList.map((pokemon) => {
-                return (
-                    <li key={pokemon.id}>
-                        <img
-                            src={pokemon.boxSprite}
-                            alt={`Box sprite for ${pokemon.name}`}
-                        ></img>
-                        {`${pokemon.id} ${pokemon.name}`}
-                        <TypeImage pokemon={pokemon} />
-                    </li>
-                );
+                return <PokemonListItem pokemon={pokemon} setActivePokemon={props.setActivePokemon} />;
             })}
             {isLoading && <p>Loading...</p>}
         </ol>

@@ -1,4 +1,4 @@
-
+import { useState } from 'react';
 
 import classes from '../pages/Pokedex.module.css';
 import SearchForm from '../components/Pokedex/Search/SearchForm';
@@ -6,19 +6,20 @@ import ImageScreen from '../components/Pokedex/Info/ImageScreen';
 import ContentWrapper from '../components/Pokedex/ContentWrapper';
 import PokemonList from '../components/Pokedex/Search/PokemonList';
 
-const Dex = require('pokeapi-js-wrapper');
-const P = new Dex.Pokedex();
-
 const Pokedex = () => {
+    const [activePokemon, setActivePokemon] = useState(null);
+
+    console.log(activePokemon);
+
     return (
         <div className={classes.container}>
             <ContentWrapper>
-                <ImageScreen />
+                <ImageScreen activePokemon={activePokemon}/>
             </ContentWrapper>
             <div className={classes.divider}></div>
             <ContentWrapper>
                 <SearchForm />
-                <PokemonList P={P} />
+                <PokemonList setActivePokemon={setActivePokemon} />
             </ContentWrapper>
         </div>
     );
